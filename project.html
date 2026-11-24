@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project | Malbert Colarina</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --midnight: #05060d;
+      --card: rgba(12, 16, 34, 0.72);
+      --electric-blue: #00b3ff;
+      --sunset-orange: #ff7a1a;
+      --sunset-orange-dark: #ff5a1f;
+      --text: #e8eefc;
+      --text-muted: #9aa7c7;
+      --border: rgba(0, 179, 255, 0.2);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+    body {
+      background: var(--midnight); color: var(--text);
+      font-family: "Poppins", system-ui, sans-serif; line-height: 1.7; overflow-x: hidden;
+    }
+    #constellation { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+    .bar {
+      position: sticky; top: 0; z-index: 10; height: 72px; padding: 0 4%;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(5,6,13,.78); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+    .logo { font-size: 1.4rem; font-weight: 700; color: var(--text); text-decoration: none; }
+    .logo span { color: var(--electric-blue); }
+
+    .btn {
+      display: inline-block; padding: 11px 28px; border-radius: 50px; font-weight: 600; font-size: .9rem;
+      text-decoration: none; transition: transform .2s, box-shadow .2s, background .2s, color .2s;
+    }
+    .btn-primary { background: linear-gradient(135deg, var(--sunset-orange), var(--sunset-orange-dark)); color: #fff; box-shadow: 0 6px 24px rgba(255,122,26,.35); }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(255,122,26,.55); }
+    .btn-outline { border: 2px solid var(--electric-blue); color: var(--electric-blue); }
+    .btn-outline:hover { background: var(--electric-blue); color: #05060d; transform: translateY(-3px); }
+
+    main { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: 60px 5% 80px; }
+    .head { text-align: center; margin-bottom: 44px; }
+    .head h1 { font-size: clamp(1.9rem, 4.5vw, 3rem); color: var(--electric-blue); margin-bottom: 12px; }
+    .head p { color: var(--text-muted); max-width: 720px; margin: 0 auto 24px; }
+    .head .actions { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+
+    .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 22px; }
+    .shot {
+      border: 1px solid var(--border); border-radius: 16px; overflow: hidden; cursor: zoom-in;
+      background: var(--card); transition: transform .25s, border-color .25s, box-shadow .25s;
+    }
+    .shot:hover { transform: translateY(-5px); border-color: var(--electric-blue); box-shadow: 0 10px 34px rgba(0,179,255,.18); }
+    .shot img { display: block; width: 100%; height: auto; }
+
+    /* Section jump buttons */
+    .jump { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 50px; }
+    .chip {
+      font-size: .85rem; font-weight: 500; padding: 7px 18px; border-radius: 30px; text-decoration: none;
+      border: 1px solid var(--border); color: var(--text); background: rgba(0,179,255,.08);
+      transition: background .2s, border-color .2s, color .2s;
+    }
+    .chip:hover { background: var(--sunset-orange); border-color: var(--sunset-orange); color: #fff; }
+
+    /* Project sections */
+    .sec { margin-bottom: 70px; }
+    .sec-head {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+      gap: 14px 24px; margin-bottom: 24px; padding-left: 16px; border-left: 4px solid var(--sunset-orange);
+    }
+    .sec-head h2 { font-size: clamp(1.3rem, 3vw, 1.8rem); color: var(--electric-blue); }
+    .sec-head p { color: var(--text-muted); font-size: .95rem; margin-top: 4px; max-width: 620px; }
+    .sec-head .btn { padding: 9px 24px; font-size: .85rem; }
+
+    .notfound { text-align: center; color: var(--text-muted); padding: 80px 0; }
+    .notfound h1 { color: var(--sunset-orange); margin-bottom: 10px; }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed; inset: 0; z-index: 100; background: rgba(2,3,8,.94);
+      display: none; align-items: center; justify-content: center; padding: 30px;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 100%; max-height: 100%; border-radius: 10px; box-shadow: 0 0 60px rgba(0,179,255,.25); }
+    .lb-btn {
+      position: absolute; background: rgba(12,16,34,.85); color: var(--electric-blue);
+      border: 1px solid var(--electric-blue); width: 48px; height: 48px; border-radius: 50%;
+      font-size: 1.4rem; cursor: pointer; transition: background .2s, color .2s;
+    }
+    .lb-btn:hover { background: var(--sunset-orange); border-color: var(--sunset-orange); color: #fff; }
+    .lb-close { top: 20px; right: 20px; }
+    .lb-prev { left: 20px; top: 50%; transform: translateY(-50%); }
+    .lb-next { right: 20px; top: 50%; transform: translateY(-50%); }
+    .lb-count { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); color: var(--text-muted); font-size: .9rem; }
+
+    @media (max-width: 680px) {
+      .gallery { grid-template-columns: 1fr; }
+      .lb-prev { left: 8px; } .lb-next { right: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="constellation" aria-hidden="true"></canvas>
+
+  <header class="bar">
+    <a href="index.html" class="logo">My <span>Portfolio</span></a>
+    <a href="index.html#projects" class="btn btn-outline">← Back to Projects</a>
+  </header>
+
+  <main id="app"></main>
+
+  <div class="lightbox" id="lightbox">
+    <button class="lb-btn lb-close" id="lbClose" aria-label="Close">✕</button>
+    <button class="lb-btn lb-prev" id="lbPrev" aria-label="Previous">‹</button>
+    <img id="lbImg" alt="">
+    <button class="lb-btn lb-next" id="lbNext" aria-label="Next">›</button>
+    <div class="lb-count" id="lbCount"></div>
+  </div>
+
+  <script>
+    /* ============================================================
+       EDIT YOUR PROJECTS HERE
+       - The number (1, 2, 3) matches project.html?id=1, ?id=2 ...
+       - A project can use "sections" (each with its own Canva link)
+         OR a plain "images" list (like projects 2 and 3).
+       ============================================================ */
+    const PROJECTS = {
+      1: {
+        title: "Brew Vroom Cafe Social Media Graphics",
+        description: "Created a series of social media graphics and promotional materials for Brew Vroom Café, focusing on visual storytelling, brand identity, and engaging content that reflects the café's unique motorcycle-inspired concept.",
+        canva: "",   // overall link for the whole project (leave "" to hide this top button)
+        sections: [
+          {
+            title: "Social Media Graphics",
+            description: "Social media graphics and promotional materials for Brew Vroom Café.",
+            canva: "https://canva.link/mg6cstsrlnovjs2",
+            images: [
+              "images/pic1.png",
+              "images/pic2.png",
+              "images/pic3.png",
+              "images/pic4.png",
+              "images/pic5.png",
+              "images/pic6.png",
+              "images/pic7.png",
+              "images/pic8.png",
+              "images/pic9.png",
+              "images/pic10.png",
+              "images/pic11.png",
+              "images/pic12.png",
+              "images/pic13.png",
+              "images/pic14.png",
+              "images/pic15.png",
+              "images/pic20.png",
+              "images/pic21.png",
+              "images/pic22.png",
+            ]
+          }
+           ,{
+            title: "Promotional holiday graphics",
+            description: "Social media graphics for special days and holidays.",
+            canva: "https://canva.link/l7vxry9nctvadkd",
+            images: [
+              "images/pic16.png",
+              "images/pic17.png",
+                "images/pic18.png",
+            ]
+          }
+          ,{
+            title: "Scratch card design",
+            description: "Scratch card design for Brew Vroom Café's promotional campaign.",
+            canva: "https://canva.link/4bw2f463lrcljze",
+            images: [
+              "images/pic19.png",
+              
+            ]
+          }
+
+          /* TO ADD ANOTHER SECTION: add a comma after the closing } above,
+             then copy this block below it (and move some images into it):
+
+          ,{
+            title: "Menu Design",
+            description: "Short description of this group of graphics.",
+            canva: "https://canva.link/your-other-link",
+            images: [
+              "images/pic16.png",
+              "images/pic17.png"
+            ]
+          }
+          */
+        ]
+      },
+            2: {
+        title: "Tupperware – Promotional Banner Designs",
+        description: "Created a series of promotional banner designs for Tupperware, focusing on vibrant visuals and effective messaging to enhance brand visibility and engagement.",
+        canva: "",   // each section has its own link, so the top button is hidden
+        sections: [
+          {
+            title: "Banner Design 1",
+            description: "A 320x480 banner design.",
+            canva: "https://canva.link/5tzl4mb3n5sq1dq",
+            images: [
+              "images/pic23.png",
+              "images/pic24.png",
+            ]
+          },
+          {
+            title: "Banner Design 2",
+            description: "A 640x480 banner design.",
+            canva: "https://canva.link/lm77lvkvz91mn36",
+            images: [
+              "images/pic28.png",
+              "images/pic29.png",
+            ]
+          },
+          {
+            title: "Banner Design 3",
+            description: "A 300x50 banner design.",
+            canva: "https://canva.link/ue9nahl7q72lnej",
+            images: [
+              "images/pic25.png",
+              
+            ]
+          },
+          {
+            title: "Banner Design 4",
+            description: "A 320x50 banner design.",
+            canva: "https://canva.link/4zsm135uwuuyndp",
+            images: [
+              "images/pic26.png",
+              "images/pic27.png",
+            ]
+          }
+        ]
+      },
+      3: {
+        title: "Personal Design Collection",
+        description: "A collection of personal graphic design projects created during my free time, inspired by my interests, hobbies, and creative ideas. These works allow me to explore different visual styles, experiment with layouts and typography, and continuously develop my creativity and design skills beyond professional and academic projects.",
+        canva: "https://canva.link/bbmu9pyl2v55qtr",
+        images: [
+          "images/pic30.png",
+          "images/pic31.png",
+          "images/pic32.png",
+          "images/pic34.png",
+          "images/pic35.jpg",
+          "images/pic33.png",
+        ]
+      }
+    };
+
+    /* ---------- Render the page ---------- */
+    const app = document.getElementById("app");
+    const id = new URLSearchParams(location.search).get("id");
+    const project = PROJECTS[id];
+
+    function esc(s) {
+      return String(s).replace(/[&<>"']/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+      });
+    }
+
+    if (!project) {
+      document.title = "Project not found | Malbert Colarina";
+      app.innerHTML = '<div class="notfound"><h1>Project not found</h1><p>This project does not exist yet.</p><br><a class="btn btn-primary" href="index.html#projects">Back to Projects</a></div>';
+    } else {
+      document.title = project.title + " | Malbert Colarina";
+
+      // Projects without sections still work: treat their images as one unnamed section
+      const hasSections = Array.isArray(project.sections) && project.sections.length > 0;
+      const sections = hasSections ? project.sections : [{ images: project.images || [] }];
+
+      // One flat list of every image, so the lightbox can flip through all of them
+      const flat = [];
+      sections.forEach(function (s) { (s.images || []).forEach(function (src) { flat.push(src); }); });
+
+      let counter = 0;
+
+      const jump = (hasSections && sections.length > 1)
+        ? '<div class="jump">' + sections.map(function (s, i) {
+            return '<a class="chip" href="#sec-' + i + '">' + esc(s.title) + '</a>';
+          }).join("") + '</div>'
+        : "";
+
+      const sectionsHtml = sections.map(function (s, si) {
+        const shots = (s.images || []).map(function (src, k) {
+          const i = counter++;
+          return '<div class="shot" data-i="' + i + '"><img src="' + esc(src) + '" alt="' +
+                 esc((s.title || project.title) + ' image ' + (k + 1)) + '" loading="lazy"></div>';
+        }).join("");
+
+        const head = s.title
+          ? '<div class="sec-head"><div><h2>' + esc(s.title) + '</h2>' +
+              (s.description ? '<p>' + esc(s.description) + '</p>' : '') + '</div>' +
+              (s.canva ? '<a class="btn btn-primary" href="' + esc(s.canva) + '" target="_blank" rel="noopener">View on Canva</a>' : '') +
+            '</div>'
+          : '';
+
+        return '<section class="sec" id="sec-' + si + '">' + head + '<div class="gallery">' + shots + '</div></section>';
+      }).join("");
+
+      app.innerHTML =
+        '<div class="head">' +
+          '<h1>' + esc(project.title) + '</h1>' +
+          '<p>' + esc(project.description) + '</p>' +
+          '<div class="actions">' +
+            (project.canva ? '<a class="btn btn-primary" href="' + esc(project.canva) + '" target="_blank" rel="noopener">View on Canva</a>' : '') +
+            '<a class="btn btn-outline" href="index.html#projects">← Back to Projects</a>' +
+          '</div>' +
+        '</div>' + jump + sectionsHtml;
+
+      /* ---------- Lightbox ---------- */
+      const lb = document.getElementById("lightbox");
+      const lbImg = document.getElementById("lbImg");
+      const lbCount = document.getElementById("lbCount");
+      let cur = 0;
+
+      function show(i) {
+        cur = (i + flat.length) % flat.length;
+        lbImg.src = flat[cur];
+        lbCount.textContent = (cur + 1) + " / " + flat.length;
+      }
+      function open(i) { show(i); lb.classList.add("open"); document.body.style.overflow = "hidden"; }
+      function close() { lb.classList.remove("open"); document.body.style.overflow = ""; }
+
+      document.querySelectorAll(".shot").forEach(function (el) {
+        el.addEventListener("click", function () { open(Number(el.dataset.i)); });
+      });
+      document.getElementById("lbClose").addEventListener("click", close);
+      document.getElementById("lbPrev").addEventListener("click", function () { show(cur - 1); });
+      document.getElementById("lbNext").addEventListener("click", function () { show(cur + 1); });
+      lb.addEventListener("click", function (e) { if (e.target === lb) close(); });
+      document.addEventListener("keydown", function (e) {
+        if (!lb.classList.contains("open")) return;
+        if (e.key === "Escape") close();
+        if (e.key === "ArrowLeft") show(cur - 1);
+        if (e.key === "ArrowRight") show(cur + 1);
+      });
+    }
+
+    /* ---------- Constellation background ---------- */
+    (function () {
+      const canvas = document.getElementById("constellation");
+      const ctx = canvas.getContext("2d");
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const BLUE = "0, 179, 255", ORANGE = "255, 122, 26";
+      const LINK_DIST = 140, MOUSE_DIST = 180;
+      let w, h, stars = [];
+      const mouse = { x: null, y: null };
+
+      function resize() {
+        const dpr = window.devicePixelRatio || 1;
+        w = window.innerWidth; h = window.innerHeight;
+        canvas.width = w * dpr; canvas.height = h * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        const count = Math.min(120, Math.floor((w * h) / 14000));
+        stars = Array.from({ length: count }, function () {
+          return { x: Math.random() * w, y: Math.random() * h,
+                   vx: (Math.random() - .5) * .35, vy: (Math.random() - .5) * .35,
+                   r: Math.random() * 1.6 + .6, accent: Math.random() < .12 };
+        });
+      }
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        for (let i = 0; i < stars.length; i++) {
+          const s = stars[i];
+          if (!reduceMotion) {
+            s.x += s.vx; s.y += s.vy;
+            if (s.x < 0 || s.x > w) s.vx *= -1;
+            if (s.y < 0 || s.y > h) s.vy *= -1;
+          }
+          ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = "rgba(" + (s.accent ? ORANGE : BLUE) + ",.9)";
+          ctx.shadowColor = "rgba(" + (s.accent ? ORANGE : BLUE) + ",.9)";
+          ctx.shadowBlur = 8; ctx.fill(); ctx.shadowBlur = 0;
+          for (let j = i + 1; j < stars.length; j++) {
+            const o = stars[j], d = Math.hypot(s.x - o.x, s.y - o.y);
+            if (d < LINK_DIST) {
+              ctx.beginPath(); ctx.moveTo(s.x, s.y); ctx.lineTo(o.x, o.y);
+              ctx.strokeStyle = "rgba(" + BLUE + "," + ((1 - d / LINK_DIST) * .35) + ")";
+              ctx.lineWidth = .8; ctx.stroke();
+            }
+          }
+          if (mouse.x !== null) {
+            const d = Math.hypot(s.x - mouse.x, s.y - mouse.y);
+            if (d < MOUSE_DIST) {
+              ctx.beginPath(); ctx.moveTo(s.x, s.y); ctx.lineTo(mouse.x, mouse.y);
+              ctx.strokeStyle = "rgba(" + ORANGE + "," + ((1 - d / MOUSE_DIST) * .45) + ")";
+              ctx.lineWidth = .8; ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(draw);
+      }
+      window.addEventListener("resize", resize);
+      window.addEventListener("mousemove", function (e) { mouse.x = e.clientX; mouse.y = e.clientY; });
+      window.addEventListener("mouseleave", function () { mouse.x = mouse.y = null; });
+      resize(); draw();
+    })();
+  </script>
+</body>
+</html>

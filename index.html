@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Malbert Colarina | Portfolio</title>
+  <meta name="description" content="Portfolio of Malbert Colarina, BSIT Graduate from Bicol University, graphic designer and aspiring web developer.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===== Theme ===== */
+    :root {
+      --midnight: #05060d;
+      --card: rgba(12, 16, 34, 0.72);
+      --electric-blue: #00b3ff;
+      --electric-blue-glow: rgba(0, 179, 255, 0.45);
+      --sunset-orange: #ff7a1a;
+      --sunset-orange-dark: #ff5a1f;
+      --text: #e8eefc;
+      --text-muted: #9aa7c7;
+      --header-h: 72px;
+      --border: rgba(0, 179, 255, 0.2);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: var(--header-h); }
+    body {
+      background: var(--midnight);
+      color: var(--text);
+      font-family: "Poppins", system-ui, sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    ul { list-style: none; }
+    a { color: inherit; }
+    .highlight { color: var(--sunset-orange); }
+
+    /* ===== Constellation canvas ===== */
+    #constellation {
+      position: fixed; inset: 0;
+      width: 100%; height: 100%;
+      z-index: 0; pointer-events: none;
+    }
+    main, .site-header, footer { position: relative; z-index: 1; }
+
+    /* ===== Header ===== */
+    .site-header {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--header-h);
+      padding: 0 4%;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(5, 6, 13, 0.78);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      z-index: 10;
+    }
+    .logo { font-size: 1.4rem; font-weight: 700; color: var(--text); text-decoration: none; letter-spacing: .5px; }
+    .logo span { color: var(--electric-blue); }
+    .nav { display: flex; gap: 24px; }
+    .nav a {
+      position: relative; color: var(--text-muted); text-decoration: none;
+      font-size: .9rem; font-weight: 500; padding: 6px 0; transition: color .25s;
+    }
+    .nav a::after {
+      content: ""; position: absolute; left: 0; bottom: 0;
+      width: 0; height: 2px; background: var(--sunset-orange); transition: width .25s;
+    }
+    .nav a:hover { color: var(--electric-blue); }
+    .nav a:hover::after { width: 100%; }
+    .nav-toggle, .nav-toggle-label { display: none; }
+
+    /* ===== Hero ===== */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+      padding: calc(var(--header-h) + 30px) 5% 60px;
+    }
+    .photo-frame {
+      width: 190px; height: 190px; border-radius: 50%; padding: 5px;
+      background: linear-gradient(135deg, var(--electric-blue), #6a5cff 60%, var(--sunset-orange));
+      box-shadow: 0 0 35px var(--electric-blue-glow), 0 0 80px rgba(0,179,255,.2);
+      margin-bottom: 30px;
+      animation: float 5s ease-in-out infinite;
+    }
+    .photo-frame img {
+      width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block;
+      background: #0d1124; border: 4px solid var(--midnight);
+    }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+    .name {
+  width: fit-content; margin: 0 auto;
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 800; line-height: 1.15; letter-spacing: .5px;
+  color: var(--electric-blue);
+  text-shadow: 0 0 22px var(--electric-blue-glow);
+  cursor: default;
+  transition: color .3s ease, text-shadow .3s ease;
+}
+/* Hover: turns sunset orange */
+.name:hover {
+  color: var(--sunset-orange);
+  text-shadow: 0 0 22px rgba(255, 122, 26, 0.5);
+}
+    .subtitle {
+      margin-top: 16px;
+      font-size: clamp(1rem, 2.4vw, 1.45rem);
+      font-weight: 500; letter-spacing: 2px; color: var(--electric-blue);
+    }
+    .subtitle .divider { color: var(--text-muted); margin: 0 8px; }
+    .intro {
+      margin-top: 22px; max-width: 760px;
+      color: var(--text-muted); font-size: 1rem;
+    }
+    .hero-buttons { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
+
+    .btn {
+      display: inline-block; padding: 13px 32px; border-radius: 50px;
+      font-weight: 600; font-size: .92rem; text-decoration: none; cursor: pointer;
+      transition: transform .2s, box-shadow .2s, background .2s, color .2s;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--sunset-orange), var(--sunset-orange-dark));
+      color: #fff; box-shadow: 0 6px 24px rgba(255,122,26,.35);
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(255,122,26,.55); }
+    .btn-outline { border: 2px solid var(--electric-blue); color: var(--electric-blue); }
+    .btn-outline:hover { background: var(--electric-blue); color: #05060d; transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,179,255,.45); }
+
+    /* ===== Sections ===== */
+    .section { padding: 100px 5% 40px; max-width: 1180px; margin: 0 auto; }
+    .section-title {
+      text-align: center; font-size: clamp(1.9rem, 4vw, 2.7rem);
+      font-weight: 700; color: var(--electric-blue); margin-bottom: 14px;
+    }
+    .section-sub { text-align: center; color: var(--text-muted); max-width: 640px; margin: 0 auto 50px; }
+    .card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 18px;
+      padding: 28px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      transition: transform .25s, border-color .25s, box-shadow .25s;
+    }
+    .card:hover { transform: translateY(-5px); border-color: var(--electric-blue); box-shadow: 0 10px 34px rgba(0,179,255,.15); }
+    .card h3 { color: var(--electric-blue); font-size: 1.1rem; margin-bottom: 12px; }
+    .card p { color: var(--text-muted); font-size: .95rem; }
+    .card p + p { margin-top: 12px; }
+    .bullets li { position: relative; padding-left: 20px; margin-top: 8px; color: var(--text-muted); font-size: .93rem; }
+    .bullets li::before {
+      content: ""; position: absolute; left: 0; top: .7em;
+      width: 8px; height: 8px; border-radius: 50%; background: var(--sunset-orange);
+    }
+    .bullets li b { color: var(--text); font-weight: 600; }
+
+    /* ===== About ===== */
+    .about-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .about-grid .wide { grid-column: 1 / -1; }
+
+    /* ===== Skills: solar system ===== */
+    .solar-wrap { position: relative; height: 560px; margin-bottom: 40px; }
+    .solar {
+      position: absolute; top: 0; left: 50%;
+      width: 540px; height: 540px;
+      transform: translateX(-50%); transform-origin: top center;
+    }
+    .sun {
+      position: absolute; top: 50%; left: 50%;
+      width: 96px; height: 96px; margin: -48px 0 0 -48px; border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #fff7b0 0%, #ffd400 35%, #ff9d00 70%, #ff6a00 100%);
+      box-shadow: 0 0 40px 12px rgba(255,190,0,.55), 0 0 110px 40px rgba(255,120,0,.3);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: .8rem; letter-spacing: 1.5px; color: #5a2a00;
+      animation: pulse 4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 40px 12px rgba(255,190,0,.55), 0 0 110px 40px rgba(255,120,0,.3); }
+      50%     { box-shadow: 0 0 55px 18px rgba(255,190,0,.7),  0 0 130px 55px rgba(255,120,0,.4); }
+    }
+    .orbit {
+      position: absolute; top: 50%; left: 50%;
+      width: calc(var(--r) * 2); height: calc(var(--r) * 2);
+      margin-left: calc(var(--r) * -1); margin-top: calc(var(--r) * -1);
+      border: 1px dashed rgba(0,179,255,.35); border-radius: 50%;
+      animation: spin var(--dur) linear infinite var(--dir);
+    }
+    .planet {
+      position: absolute; top: 50%; left: 50%;
+      width: 50px; height: 50px; margin: -25px 0 0 -25px;
+      transform: rotate(var(--a)) translateX(var(--r)) rotate(calc(var(--a) * -1));
+    }
+    .planet-icon {
+      position: relative; width: 50px; height: 50px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #1d2547, #0a0e22);
+      border: 1.5px solid var(--electric-blue);
+      box-shadow: 0 0 14px rgba(0,179,255,.45);
+      display: flex; align-items: center; justify-content: center;
+      animation: spin var(--dur) linear infinite var(--cdir);
+    }
+    .planet-icon img { width: 28px; height: 28px; object-fit: contain; }
+    .planet-icon::after {
+      content: attr(data-name); position: absolute; bottom: 120%; left: 50%;
+      transform: translateX(-50%); white-space: nowrap;
+      background: var(--sunset-orange); color: #fff; font-size: .72rem; font-weight: 600;
+      padding: 3px 10px; border-radius: 20px; opacity: 0; pointer-events: none; transition: opacity .2s;
+    }
+    .planet-icon:hover::after { opacity: 1; }
+    .solar:hover .orbit, .solar:hover .planet-icon { animation-play-state: paused; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    /* Spin helper: planet positions use transform, so the spin keyframes only apply to .orbit and .planet-icon */
+    .planet-icon { transform-origin: center; }
+
+    .skill-groups { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      font-size: .82rem; padding: 5px 14px; border-radius: 30px;
+      border: 1px solid var(--border); color: var(--text); background: rgba(0,179,255,.08);
+      transition: background .2s, border-color .2s, color .2s;
+    }
+    .chip:hover { background: var(--sunset-orange); border-color: var(--sunset-orange); color: #fff; }
+
+    /* ===== Projects ===== */
+    .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 26px; }
+    .project { padding: 0; overflow: hidden; display: flex; flex-direction: column; }
+    .project-img {
+      aspect-ratio: 16 / 10; overflow: hidden;
+      background: linear-gradient(135deg, #0d1736, #1b2a5e 60%, #3a2410);
+      display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: .85rem;
+    }
+    .project-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
+    .project:hover .project-img img { transform: scale(1.06); }
+    .project-body { padding: 22px 24px 26px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    .project-body h3 { margin: 0; }
+    .project-body .btn { align-self: flex-start; margin-top: auto; padding: 9px 24px; font-size: .85rem; }
+
+    /* Clickable project card */
+.project { position: relative; cursor: pointer; }
+.project-link { text-decoration: none; color: inherit; }
+.project-link::after { content: ""; position: absolute; inset: 0; z-index: 1; }  /* makes the whole card clickable */
+.project-body .btn { position: relative; z-index: 2; }                            /* Canva button stays separately clickable */
+.view-more { color: var(--sunset-orange); font-size: .85rem; font-weight: 600; }
+
+    /* ===== Education ===== */
+    .edu-layout { display: grid; grid-template-columns: 380px 1fr; gap: 40px; align-items: start; }
+    .grad-frame {
+      border-radius: 20px; padding: 5px;
+      background: linear-gradient(135deg, var(--electric-blue), #6a5cff 60%, var(--sunset-orange));
+      box-shadow: 0 0 40px rgba(0,179,255,.25);
+    }
+    .grad-inner { border-radius: 16px; overflow: hidden; background: #0b1022; }
+    .grad-inner img { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; background: #0d1124; }
+    .grad-caption { padding: 16px 12px; text-align: center; font-weight: 700; background: #0b1022; border-top: 1px solid var(--border); }
+    .grad-caption span { color: var(--electric-blue); }
+    .grad-caption .highlight { color: var(--sunset-orange); }
+
+    .timeline { position: relative; padding-left: 34px; }
+    .timeline::before {
+      content: ""; position: absolute; left: 8px; top: 6px; bottom: 6px; width: 2px;
+      background: linear-gradient(var(--electric-blue), var(--sunset-orange));
+    }
+    .t-item { position: relative; margin-bottom: 22px; }
+    .t-item::before {
+      content: ""; position: absolute; left: -34px; top: 26px;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--midnight); border: 3px solid var(--sunset-orange);
+    }
+    .t-item h3 { margin-bottom: 2px; }
+    .t-tag { display: inline-block; font-size: .78rem; font-weight: 600; color: var(--sunset-orange); margin-bottom: 8px; }
+    .t-org { color: var(--text); font-weight: 500; font-size: .95rem; }
+
+    .ach-title { text-align: center; margin: 60px 0 24px; font-size: 1.5rem; color: var(--electric-blue); }
+    .ach-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; max-width: 760px; margin: 0 auto; }
+    .ach { text-align: center; padding: 24px 20px; }
+    .ach .badge {
+      display: inline-block; font-size: .78rem; font-weight: 700; padding: 4px 14px; border-radius: 30px; margin-bottom: 10px;
+    }
+    .badge.pres { background: rgba(255,122,26,.15); color: var(--sunset-orange); border: 1px solid var(--sunset-orange); }
+    .badge.dean { background: rgba(0,179,255,.12); color: var(--electric-blue); border: 1px solid var(--electric-blue); }
+    .ach p { color: var(--text); font-weight: 500; }
+
+    /* ===== Experience ===== */
+    .exp-list { display: flex; flex-direction: column; gap: 26px; }
+    .exp-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 20px; margin-bottom: 6px; }
+    .exp-head h3 { font-size: 1.25rem; margin: 0; }
+    .exp-date { color: var(--sunset-orange); font-weight: 600; font-size: .88rem; }
+    .exp-org { color: var(--text); font-weight: 500; }
+    .exp-loc { color: var(--text-muted); font-size: .88rem; margin-bottom: 8px; }
+    .tech { margin-top: 16px; font-size: .88rem; color: var(--text-muted); }
+    .tech b { color: var(--text); }
+    .sub-projects { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 18px; }
+    .sub-card {
+      background: rgba(0,179,255,.05); border: 1px solid var(--border); border-radius: 14px; padding: 20px;
+    }
+    .sub-card h4 { color: var(--text); font-size: 1rem; }
+    .sub-card .t-tag { margin: 2px 0 8px; }
+
+    /* ===== Contact ===== */
+    .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 22px; }
+    .contact-card { display: flex; align-items: center; gap: 18px; text-decoration: none; }
+    .contact-icon {
+      flex: 0 0 52px; height: 52px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, var(--sunset-orange), var(--sunset-orange-dark));
+      box-shadow: 0 4px 18px rgba(255,122,26,.35);
+    }
+    .contact-icon svg { width: 24px; height: 24px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .contact-card small { display: block; color: var(--electric-blue); font-weight: 600; font-size: .8rem; letter-spacing: 1px; text-transform: uppercase; }
+    .contact-card span { color: var(--text); font-size: .95rem; word-break: break-word; }
+
+    footer { text-align: center; padding: 50px 5% 40px; color: var(--text-muted); font-size: .85rem; }
+
+    /* ===== Reveal animation ===== */
+    .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.show { opacity: 1; transform: none; }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 1180px) {
+      .nav-toggle-label { display: flex; align-items: center; width: 30px; height: 30px; cursor: pointer; }
+      .nav-toggle-label span, .nav-toggle-label span::before, .nav-toggle-label span::after {
+        display: block; position: relative; width: 26px; height: 2px; background: var(--electric-blue);
+        transition: transform .25s, top .25s;
+      }
+      .nav-toggle-label span::before, .nav-toggle-label span::after { content: ""; position: absolute; left: 0; }
+      .nav-toggle-label span::before { top: -8px; }
+      .nav-toggle-label span::after { top: 8px; }
+      .nav {
+        position: absolute; top: var(--header-h); left: 0; right: 0;
+        flex-direction: column; gap: 0;
+        background: rgba(5,6,13,.97); border-bottom: 1px solid var(--border);
+        max-height: 0; overflow: hidden; transition: max-height .3s ease;
+      }
+      .nav a { padding: 14px 5%; font-size: .95rem; }
+      .nav a::after { display: none; }
+      .nav-toggle:checked ~ .nav { max-height: 520px; }
+      .nav-toggle:checked ~ .nav-toggle-label span { background: transparent; }
+      .nav-toggle:checked ~ .nav-toggle-label span::before { top: 0; transform: rotate(45deg); }
+      .nav-toggle:checked ~ .nav-toggle-label span::after { top: 0; transform: rotate(-45deg); }
+    }
+    @media (max-width: 960px) {
+      .about-grid, .skill-groups, .sub-projects { grid-template-columns: 1fr; }
+      .edu-layout { grid-template-columns: 1fr; }
+      .grad-frame { max-width: 380px; margin: 0 auto; }
+    }
+    @media (max-width: 680px) {
+      .solar { transform: translateX(-50%) scale(.62); }
+      .solar-wrap { height: 345px; }
+      .ach-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 420px) {
+      .photo-frame { width: 150px; height: 150px; }
+      .btn { padding: 12px 24px; }
+      .solar { transform: translateX(-50%) scale(.55); }
+      .solar-wrap { height: 305px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .photo-frame, .sun, .orbit, .planet-icon { animation: none; }
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="constellation" aria-hidden="true"></canvas>
+
+  <!-- ===== Header ===== -->
+  <header class="site-header">
+    <a href="#home" class="logo">My <span>Portfolio</span></a>
+
+    <input type="checkbox" id="nav-toggle" class="nav-toggle">
+    <label for="nav-toggle" class="nav-toggle-label" aria-label="Toggle navigation"><span></span></label>
+
+    <nav class="nav">
+      <a href="#home">Home</a>
+      <a href="#about">About Me</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#education">Education &amp; Achievements</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ===== Home / Hero ===== -->
+    <section id="home" class="hero">
+      <div class="photo-frame">
+        <img src="images/newpic.jpg" alt="Photo of Malbert Colarina">
+      </div>
+
+      <h1 class="name">Hi, I'm Malbert Colarina</h1>
+      <p class="subtitle">BSIT GRADUATE <span class="divider">|</span> <span class="highlight">Bicol University</span></p>
+
+      <p class="intro">
+        I am a graphic designer and aspiring web developer with a passion for creating visually engaging digital experiences.
+        I specialize in graphic design and website development, with a strong focus on UI design, clean layouts, and user-friendly
+        web interfaces. I enjoy combining creativity and technology to build designs that are both aesthetically pleasing and functional.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="#projects" class="btn btn-primary">View Projects</a>
+        <a href="resume.pdf" download="Malbert-Colarina-Resume.pdf" class="btn btn-outline">My Resume</a>
+        <a href="#contact" class="btn btn-outline">Contact Me</a>
+      </div>
+    </section>
+
+    <!-- ===== About Me ===== -->
+    <section id="about" class="section">
+      <h2 class="section-title reveal">About <span class="highlight">Me</span></h2>
+      <p class="section-sub reveal">A little about my background, interests, and where I'm headed.</p>
+
+      <div class="about-grid">
+        <div class="card reveal">
+          <h3>1. Educational Background</h3>
+          <p>I am a Bachelor of Science in Information Technology (BSIT) student at Bicol University. Throughout my academic journey, I have developed a strong foundation in programming, web development, database management, and system design. My education has allowed me to work on various academic and personal projects that strengthened my technical knowledge and practical skills.</p>
+        </div>
+
+        <div class="card reveal">
+          <h3>2. Short Professional Biography</h3>
+          <p>I am an aspiring IT professional with an interest in front-end and full-stack web development, UI/UX design, and multimedia creation. I have experience developing web-based applications, designing user interfaces, and creating digital graphics through academic projects, freelance work, and internship experience.</p>
+          <p>During my internship at the Albay Provincial Agricultural Office, I worked as a front-end developer for Bitanim, a web-based agricultural information system. This experience helped me improve my collaboration, problem-solving, and development skills while working in a real-world environment.</p>
+          <p>I enjoy combining creativity and technology to develop functional, user-friendly, and visually engaging digital experiences.</p>
+        </div>
+
+        <div class="card reveal">
+          <h3>3. Career Interests</h3>
+          <p>My interests revolve around the intersection of technology, creativity, and problem-solving. I am particularly interested in:</p>
+          <ul class="bullets">
+            <li><b>Front-End Development:</b> Building responsive, interactive, and user-friendly websites.</li>
+            <li><b>Full-Stack Development:</b> Understanding both client-side and server-side development.</li>
+            <li><b>UI/UX Design:</b> Creating clean, accessible, and meaningful user experiences.</li>
+            <li><b>Graphic Design:</b> Producing creative visual content and digital materials.</li>
+            <li><b>Software Development:</b> Developing practical solutions through technology and programming.</li>
+          </ul>
+        </div>
+
+        <div class="card reveal">
+          <h3>4. Personal Strengths</h3>
+          <p>I consider myself a creative, adaptable, and detail-oriented individual who enjoys learning and exploring new technologies. My experiences in academic projects, collaborative development, and freelance design have helped me develop the following strengths:</p>
+          <ul class="bullets">
+            <li><b>Creativity:</b> Able to turn ideas into meaningful digital designs and solutions.</li>
+            <li><b>Adaptability:</b> Willing to learn new tools, technologies, and development approaches.</li>
+            <li><b>Problem-Solving:</b> Enjoy finding solutions to technical challenges and improving existing work.</li>
+            <li><b>Attention to Detail:</b> Focused on creating clean designs and functional outputs.</li>
+            <li><b>Collaboration:</b> Comfortable working with others and contributing to team projects.</li>
+            <li><b>Continuous Learning:</b> Motivated to improve my skills and explore new opportunities.</li>
+          </ul>
+        </div>
+
+        <div class="card wide reveal">
+          <h3>5. Career Goals</h3>
+          <p>My goal is to become a skilled and well-rounded software developer who can build innovative, reliable, and user-centered applications. I aim to continuously strengthen my knowledge in front-end and back-end development while expanding my experience in software engineering and modern web technologies.</p>
+          <p>I also aspire to work with a team where I can contribute my creativity, technical skills, and willingness to learn while gaining valuable industry experience. In the long run, I hope to develop meaningful digital solutions that address real-world problems and create a positive impact.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Skills ===== -->
+    <section id="skills" class="section">
+      <h2 class="section-title reveal">My <span class="highlight">Skills</span></h2>
+      <p class="section-sub reveal">My tech universe: hover over a planet to see the tool.</p>
+
+      <div class="solar-wrap reveal">
+        <div class="solar">
+          <div class="sun">SKILLS</div>
+
+          <!-- Orbit 1 -->
+          <div class="orbit" style="--r:100px; --dur:24s; --dir:normal; --cdir:reverse;">
+            <div class="planet" style="--a:0deg;"><div class="planet-icon" data-name="HTML"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" alt="HTML"></div></div>
+            <div class="planet" style="--a:120deg;"><div class="planet-icon" data-name="CSS"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" alt="CSS"></div></div>
+            <div class="planet" style="--a:240deg;"><div class="planet-icon" data-name="JavaScript"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" alt="JavaScript"></div></div>
+          </div>
+
+          <!-- Orbit 2 -->
+          <div class="orbit" style="--r:170px; --dur:38s; --dir:reverse; --cdir:normal;">
+            <div class="planet" style="--a:0deg;"><div class="planet-icon" data-name="PHP"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" alt="PHP"></div></div>
+            <div class="planet" style="--a:90deg;"><div class="planet-icon" data-name="Java"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" alt="Java"></div></div>
+            <div class="planet" style="--a:180deg;"><div class="planet-icon" data-name="React.js"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" alt="React"></div></div>
+            <div class="planet" style="--a:270deg;"><div class="planet-icon" data-name="Laravel"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/laravel/laravel-original.svg" alt="Laravel"></div></div>
+          </div>
+
+          <!-- Orbit 3 -->
+          <div class="orbit" style="--r:240px; --dur:56s; --dir:normal; --cdir:reverse;">
+            <div class="planet" style="--a:0deg;"><div class="planet-icon" data-name="MySQL"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" alt="MySQL"></div></div>
+            <div class="planet" style="--a:60deg;"><div class="planet-icon" data-name="Figma"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" alt="Figma"></div></div>
+            <div class="planet" style="--a:120deg;"><div class="planet-icon" data-name="Photoshop"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/photoshop/photoshop-plain.svg" alt="Photoshop"></div></div>
+            <div class="planet" style="--a:180deg;"><div class="planet-icon" data-name="Canva"><img src="images/canva.jpg" alt="Canva"></div></div>
+            <div class="planet" style="--a:240deg;"><div class="planet-icon" data-name="Git"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" alt="Git"></div></div>
+            <div class="planet" style="--a:300deg;"><div class="planet-icon" data-name="VS Code"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg" alt="VS Code"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-groups">
+        <div class="card reveal">
+          <h3>1. Programming Languages</h3>
+          <div class="chips"><span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">JavaScript</span><span class="chip">Java</span><span class="chip">C</span><span class="chip">C#</span><span class="chip">PHP</span></div>
+        </div>
+        <div class="card reveal">
+          <h3>2. Web Development</h3>
+          <div class="chips"><span class="chip">Front-End Development</span><span class="chip">Responsive Web Design</span><span class="chip">Full-Stack Web Development</span><span class="chip">Laravel</span><span class="chip">React.js</span><span class="chip">Vite</span></div>
+        </div>
+        <div class="card reveal">
+          <h3>3. Database Management</h3>
+          <div class="chips"><span class="chip">MySQL</span><span class="chip">Database Design</span><span class="chip">CRUD Operations</span><span class="chip">Data Management</span></div>
+        </div>
+        <div class="card reveal">
+          <h3>4. UI/UX and Graphic Design</h3>
+          <div class="chips"><span class="chip">Figma</span><span class="chip">Canva</span><span class="chip">Adobe Photoshop</span><span class="chip">Wireframing and Prototyping</span><span class="chip">User Interface Design</span><span class="chip">Digital Graphics and Layout Design</span></div>
+        </div>
+        <div class="card reveal">
+          <h3>5. Development Tools</h3>
+          <div class="chips"><span class="chip">Visual Studio Code</span><span class="chip">Git and GitHub</span><span class="chip">GitHub Desktop</span><span class="chip">NetBeans</span><span class="chip">XAMPP</span></div>
+        </div>
+        <div class="card reveal">
+          <h3>6. Professional Skills</h3>
+          <div class="chips"><span class="chip">Problem-Solving</span><span class="chip">Creative Thinking</span><span class="chip">Adaptability</span><span class="chip">Team Collaboration</span><span class="chip">Attention to Detail</span><span class="chip">Time Management</span><span class="chip">Continuous Learning</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Projects ===== -->
+    <section id="projects" class="section">
+      <h2 class="section-title reveal">My <span class="highlight">Projects</span></h2>
+      <p class="section-sub reveal">A selection of my designs. Click the button to view each one on Canva.</p>
+
+      <div class="project-grid">
+        <!-- Copy this whole <article> block to add more projects -->
+        <article class="card project reveal">
+  <div class="project-img">
+    <img src="images/pic1.png" alt="Project 1 preview" onerror="this.style.display='none'">
+  </div>
+  <div class="project-body">
+    <h3><a class="project-link" href="project.html?id=1">Brew Vroom Cafe Social Media Graphics</a></h3>
+    <p>A collection of promotional graphics, social media carousel designs, and visual content created for a motorcycle-inspired café.</p>
+    <span class="view-more">View all images →</span>
+    <a href="https://canva.link/mg6cstsrlnovjs2" target="_blank" rel="noopener" class="btn btn-primary">View on Canva</a>
+  </div>
+</article>
+
+        <article class="card project reveal">
+  <div class="project-img">
+    <img src="images/pic23.png" alt="Project 2 preview" onerror="this.style.display='none'">
+  </div>
+  <div class="project-body">
+    <h3><a class="project-link" href="project.html?id=2">Tupperware – Promotional Banner Designs</a></h3>
+    <p>A collection of promotional banners and marketing graphics designed for an international Tupperware client, focusing on product presentation, visual appeal, and effective promotional communication.</p>
+    <span class="view-more">View all images →</span>
+    <a href="https://canva.link/5tzl4mb3n5sq1dq" target="_blank" rel="noopener" class="btn btn-primary">View on Canva</a>
+  </div>
+</article>
+
+        <article class="card project reveal">
+  <div class="project-img">
+    <img src="images/pic35.jpg" alt="Project 3 preview" onerror="this.style.display='none'">
+  </div>
+  <div class="project-body">
+    <h3><a class="project-link" href="project.html?id=3">Personal Design Collection</a></h3>
+    <p>A collection of self-initiated graphic designs, creative experiments, and personal visual projects inspired by my interests, hobbies, and passion for visual storytelling.</p>
+    <span class="view-more">View all images →</span>
+    <a href="https://canva.link/bbmu9pyl2v55qtr" target="_blank" rel="noopener" class="btn btn-primary">View on Canva</a>
+  </div>
+</article>
+
+            
+    </section>
+
+    <!-- ===== Education & Achievements ===== -->
+    <section id="education" class="section">
+      <h2 class="section-title reveal">Education &amp; <span class="highlight">Achievements</span></h2>
+      <p class="section-sub reveal">My academic journey and the recognitions I've earned along the way.</p>
+
+      <div class="edu-layout">
+        <div class="grad-frame reveal">
+          <div class="grad-inner">
+            <img src="images/gradpic.jpg" alt="Graduation photo of Malbert Colarina">
+            <div class="grad-caption">BS Information Technology <span>|</span> <span class="highlight">Cum Laude</span></div>
+          </div>
+        </div>
+
+        <div class="timeline">
+          <div class="card t-item reveal">
+            <h3>Senior High School – STEM Strand</h3>
+            <span class="t-tag">Senior High School</span>
+            <p class="t-org">Naga National High School</p>
+            <p>Completed the Science, Technology, Engineering, and Mathematics strand, developing foundational knowledge in science, mathematics, and technology.</p>
+          </div>
+          <div class="card t-item reveal">
+            <h3>Junior High School</h3>
+            <span class="t-tag">Junior High School</span>
+            <p class="t-org">Naga National High School</p>
+            <p>Completed secondary education and established a foundation for further academic development.</p>
+          </div>
+          <div class="card t-item reveal">
+            <h3>Elementary Education</h3>
+            <span class="t-tag">Elementary</span>
+            <p class="t-org">Nagas Elementary School</p>
+            <p>Completed primary education and developed foundational academic and personal skills.</p>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="ach-title reveal">Academic Achievements</h3>
+      <div class="ach-grid">
+        <div class="card ach reveal"><span class="badge pres">President's Lister</span><p>AY 2025-2026 · 2nd Semester</p></div>
+        <div class="card ach reveal"><span class="badge dean">Dean's Lister</span><p>AY 2025-2026 · 1st Semester</p></div>
+        <div class="card ach reveal"><span class="badge dean">Dean's Lister</span><p>AY 2024-2025 · 2nd Semester</p></div>
+        <div class="card ach reveal"><span class="badge pres">President's Lister</span><p>AY 2023-2024 · 2nd Semester</p></div>
+      </div>
+    </section>
+
+    <!-- ===== Experience ===== -->
+    <section id="experience" class="section">
+      <h2 class="section-title reveal">My <span class="highlight">Experience</span></h2>
+      <p class="section-sub reveal">Internship, freelance work, and project-based experience.</p>
+
+      <div class="exp-list">
+        <!-- 1 -->
+        <div class="card reveal">
+          <div class="exp-head">
+            <h3>1. Front-End Developer Intern</h3>
+            <span class="exp-date">February 2026 – May 2026 | 486 Hours</span>
+          </div>
+          <p class="exp-org">Albay Provincial Agricultural Office (APAO)</p>
+          <p class="exp-loc">Cabangan, Camalig, Albay, Philippines</p>
+          <ul class="bullets">
+            <li>Worked as part of the front-end development team for Bitanim, a web-based agricultural information and monitoring system.</li>
+            <li>Designed and developed user interface components for the administrative dashboard.</li>
+            <li>Contributed to the login page layout, sidebar design, and public dashboard branding.</li>
+            <li>Improved data management interfaces, including filtering and navigation features.</li>
+            <li>Created a user manual to help administrators understand and navigate the system.</li>
+            <li>Collaborated with fellow developers to improve the system's usability and overall design.</li>
+          </ul>
+          <p class="tech"><b>Technologies:</b> React.js, Vite, JavaScript, HTML, CSS, Git, GitHub, Figma.</p>
+        </div>
+
+        <!-- 2 -->
+        <div class="card reveal">
+          <div class="exp-head">
+            <h3>2. Freelance Graphic Designer</h3>
+          </div>
+          <p class="exp-org">Freelance / Independent</p>
+          <p class="exp-loc">Graphic Design and Digital Content Creation</p>
+          <ul class="bullets">
+            <li>Created customized graphic designs and promotional materials for clients.</li>
+            <li>Designed recognition certificates and automotive-themed posters for a Tupperware client.</li>
+            <li>Developed visual layouts based on client preferences and project requirements.</li>
+            <li>Applied design principles to produce visually appealing and organized digital materials.</li>
+          </ul>
+          <p class="tech"><b>Tools:</b> Adobe Photoshop, Canva.</p>
+        </div>
+
+        <!-- 3 -->
+        <div class="card reveal">
+          <div class="exp-head">
+            <h3>3. Web Development Projects</h3>
+          </div>
+          <p class="exp-loc">Selected academic and personal projects</p>
+
+          <div class="sub-projects">
+            <div class="sub-card">
+              <h4>SUSTENA – Gamified Sustainability Web App</h4>
+              <span class="t-tag">Capstone Project | Full-Stack Development</span>
+              <ul class="bullets">
+                <li>Developed a web application encouraging students to reduce their carbon footprint through activity tracking and rewards.</li>
+                <li>Contributed to the interface, tracking features, and gamification elements.</li>
+              </ul>
+              <p class="tech"><b>Tech:</b> Laravel, PHP, MySQL, HTML, CSS, JavaScript</p>
+            </div>
+
+            <div class="sub-card">
+              <h4>WeBytes – Pet Adoption Website</h4>
+              <span class="t-tag">Academic Group Project | Front-End Development</span>
+              <ul class="bullets">
+                <li>Collaborated on a website focused on cats and dogs, featuring information and pet adoption functionality.</li>
+                <li>Contributed to the front-end design and user interface.</li>
+              </ul>
+            </div>
+
+            <div class="sub-card">
+              <h4>Restaurant Management System</h4>
+              <span class="t-tag">Academic Project | Application Development</span>
+              <ul class="bullets">
+                <li>Developed a desktop-based restaurant management application using object-oriented programming principles.</li>
+                <li>Implemented application features for managing restaurant operations.</li>
+              </ul>
+              <p class="tech"><b>Tech:</b> Java, NetBeans</p>
+            </div>
+
+            <div class="sub-card">
+              <h4>Don Quixote: A Knight's Quest</h4>
+              <span class="t-tag">Academic Project | Web Development</span>
+              <ul class="bullets">
+                <li>Developed a website based on the literary work Don Quixote.</li>
+                <li>Applied web development and design principles to create an organized and engaging website.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Contact ===== -->
+    <section id="contact" class="section">
+      <h2 class="section-title reveal">Contact <span class="highlight">Me</span></h2>
+      <p class="section-sub reveal">Let's connect. I'd love to hear from you.</p>
+
+      <div class="contact-grid">
+        <a class="card contact-card reveal" href="mailto:your.email@example.com">
+          <div class="contact-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <div><small>Professional Email</small><span>colarinamalbert2@gmail.com</span></div>
+        </a>
+
+        <a class="card contact-card reveal" href="https://www.linkedin.com/in/your-profile" target="_blank" rel="noopener">
+          <div class="contact-icon"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></div>
+          <div><small>LinkedIn</small><span>https://www.linkedin.com/in/malbert-colarina-15299b3a8/</span></div>
+        </a>
+
+        <a class="card contact-card reveal" href="https://www.facebook.com/your-profile" target="_blank" rel="noopener">
+          <div class="contact-icon"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></div>
+          <div><small>Facebook</small><span>https://www.facebook.com/Malbert.Nexuss</span></div>
+        </a>
+
+        <a class="card contact-card reveal" href="https://github.com/your-username" target="_blank" rel="noopener">
+  <div class="contact-icon"><svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></div>
+  <div><small>GitHub</small><span>https://github.com/googleMalbs</span></div>
+</a>
+
+        <a class="card contact-card reveal" href="tel:+639000000000">
+          <div class="contact-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div><small>Phone Number</small><span>+63 9639666925</span></div>
+        </a>
+
+        <div class="card contact-card reveal">
+          <div class="contact-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div><small>Address</small><span>Nagas, Tiwi, Albay, Philippines</span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; <span id="year"></span> Malbert Colarina. All rights reserved.
+  </footer>
+
+  <script>
+    // Footer year
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Close mobile menu after clicking a link
+    document.querySelectorAll(".nav a").forEach(function (a) {
+      a.addEventListener("click", function () {
+        document.getElementById("nav-toggle").checked = false;
+      });
+    });
+
+    // Fade-in on scroll
+    (function () {
+      const items = document.querySelectorAll(".reveal");
+      if (!("IntersectionObserver" in window)) {
+        items.forEach(function (el) { el.classList.add("show"); });
+        return;
+      }
+      const io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add("show"); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.12 });
+      items.forEach(function (el) { io.observe(el); });
+    })();
+
+    // Moving constellations background
+    (function () {
+      const canvas = document.getElementById("constellation");
+      const ctx = canvas.getContext("2d");
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      const BLUE = "0, 179, 255";
+      const ORANGE = "255, 122, 26";
+      const LINK_DIST = 140;
+      const MOUSE_DIST = 180;
+
+      let w, h, stars = [];
+      const mouse = { x: null, y: null };
+
+      function resize() {
+        const dpr = window.devicePixelRatio || 1;
+        w = window.innerWidth;
+        h = window.innerHeight;
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        const count = Math.min(120, Math.floor((w * h) / 14000));
+        stars = Array.from({ length: count }, function () {
+          return {
+            x: Math.random() * w,
+            y: Math.random() * h,
+            vx: (Math.random() - 0.5) * 0.35,
+            vy: (Math.random() - 0.5) * 0.35,
+            r: Math.random() * 1.6 + 0.6,
+            accent: Math.random() < 0.12
+          };
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        for (let i = 0; i < stars.length; i++) {
+          const s = stars[i];
+          if (!reduceMotion) {
+            s.x += s.vx; s.y += s.vy;
+            if (s.x < 0 || s.x > w) s.vx *= -1;
+            if (s.y < 0 || s.y > h) s.vy *= -1;
+          }
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = "rgba(" + (s.accent ? ORANGE : BLUE) + ", 0.9)";
+          ctx.shadowColor = "rgba(" + (s.accent ? ORANGE : BLUE) + ", 0.9)";
+          ctx.shadowBlur = 8;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+
+          for (let j = i + 1; j < stars.length; j++) {
+            const o = stars[j];
+            const d = Math.hypot(s.x - o.x, s.y - o.y);
+            if (d < LINK_DIST) {
+              ctx.beginPath();
+              ctx.moveTo(s.x, s.y);
+              ctx.lineTo(o.x, o.y);
+              ctx.strokeStyle = "rgba(" + BLUE + ", " + ((1 - d / LINK_DIST) * 0.35) + ")";
+              ctx.lineWidth = 0.8;
+              ctx.stroke();
+            }
+          }
+
+          if (mouse.x !== null) {
+            const d = Math.hypot(s.x - mouse.x, s.y - mouse.y);
+            if (d < MOUSE_DIST) {
+              ctx.beginPath();
+              ctx.moveTo(s.x, s.y);
+              ctx.lineTo(mouse.x, mouse.y);
+              ctx.strokeStyle = "rgba(" + ORANGE + ", " + ((1 - d / MOUSE_DIST) * 0.45) + ")";
+              ctx.lineWidth = 0.8;
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(draw);
+      }
+
+      window.addEventListener("resize", resize);
+      window.addEventListener("mousemove", function (e) { mouse.x = e.clientX; mouse.y = e.clientY; });
+      window.addEventListener("mouseleave", function () { mouse.x = mouse.y = null; });
+
+      resize();
+      draw();
+    })();
+  </script>
+</body>
+</html>
